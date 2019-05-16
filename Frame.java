@@ -14,7 +14,6 @@ public class Frame extends JFrame {
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public void intro(){
-		System.out.println(SwingUtilities.isEventDispatchThread());
 		super.setContentPane(intro);
 		intro.splashScreen();
 		repaint();
