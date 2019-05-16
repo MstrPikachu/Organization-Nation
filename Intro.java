@@ -14,24 +14,26 @@ public class Intro extends JPanel{
 		super.setLayout(layout);
 
 		//declare components
-		JLabel title = new JLabel("Organization Nation", SwingConstants.CENTER);
-		JButton mainMenu = new JButton("Main Menu");
+		JLabel title = new JLabel("Organization Nation");
+		JButton login = new JButton("Log In");
+		JButton register = new JButton("Register");
 
 		//add components
 		super.add(title);
-		super.add(mainMenu);
-		mainMenu.addActionListener(Listener.LISTENER);
+		super.add(login);
+		super.add(register);
+		login.addActionListener(Listener.LISTENER);
+		register.addActionListener(Listener.LISTENER);
 
 		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, title, 50, SpringLayout.NORTH, this);
 
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, mainMenu, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, mainMenu, 0, SpringLayout.VERTICAL_CENTER, this);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, login, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, login, -50, SpringLayout.VERTICAL_CENTER, this);
 
-		//finish panel
-		//super.setOpaque(true);
-		//super.setVisible(true);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, register, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, register, 50, SpringLayout.VERTICAL_CENTER, this);
 
 		//set up content
 		content = new BufferedImage(Frame.preferredSize.width, Frame.preferredSize.height, BufferedImage.TYPE_INT_ARGB);

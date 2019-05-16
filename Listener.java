@@ -5,9 +5,13 @@ public class Listener implements ActionListener {
 	public static final Listener LISTENER = new Listener();
 	public void actionPerformed(ActionEvent ae){
 		switch (ae.getActionCommand()){
+			case "Back":
+			case "Register!":
+			case "Log In!":
 			case "Main Menu": Main.frame.mainMenu(); break; // call main menu
 			case "Settings": Main.frame.settings(); break; // call settings
-			case "Back": Main.frame.mainMenu(); break; // go back to main menu
+			case "Log In": Main.frame.login(); break; // call login
+			case "Register": Main.frame.register(); break; // call register
 		}
 	}
 }
