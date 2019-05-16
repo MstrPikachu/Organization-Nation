@@ -5,28 +5,33 @@ import java.awt.image.BufferedImage;
 
 public class Intro extends JPanel{
 	private BufferedImage content;
-	private JButton mainMenu;
 	private int xRadius, yRadius, i = -50;
 	private double angle;
 	public Intro(){
+		//set up panel
 		super();
-		super.setOpaque(true);
 		SpringLayout layout = new SpringLayout();
 		super.setLayout(layout);
-		JLabel title = new JLabel("Organization Nation", SwingConstants.CENTER);
-		mainMenu = new JButton("Main Menu");
-		mainMenu.addActionListener(Listener.LISTENER);
 
+		//declare components
+		JLabel title = new JLabel("Organization Nation", SwingConstants.CENTER);
+		JButton mainMenu = new JButton("Main Menu");
+
+		//add components
 		super.add(title);
 		super.add(mainMenu);
+		mainMenu.addActionListener(Listener.LISTENER);
 
+		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, title, 50, SpringLayout.NORTH, this);
 
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, mainMenu, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, mainMenu, 0, SpringLayout.VERTICAL_CENTER, this);
 
-		super.setVisible(true);
+		//finish panel
+		//super.setOpaque(true);
+		//super.setVisible(true);
 
 		//set up content
 		content = new BufferedImage(Frame.preferredSize.width, Frame.preferredSize.height, BufferedImage.TYPE_INT_ARGB);
