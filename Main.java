@@ -5,6 +5,7 @@ import java.io.*;
 public class Main implements Runnable{
 	public static final Frame frame = new Frame();
 	public static String[] users;
+	static int usernameIndex;
 	public void run(){
 		frame.intro();
 	}

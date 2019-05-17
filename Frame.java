@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import java.util.StringTokenizer;
 
 public class Frame extends JFrame {
 	private Intro intro = new Intro();
@@ -36,6 +37,34 @@ public class Frame extends JFrame {
 		repaint();
 		revalidate();
 	}
+	public boolean registerUser(String username, char[] password){
+		if (username.charAt(0) == ' ' || username.charAt(username.length() - 1) == ' '){ // check for leading or trailing spaces
+			JOptionPane.showMessageDialog(this, "Please do not enter leading or trailing spaces.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		if (username.length() == 0){ // check for empty username
+			JOptionPane.showMessageDialog(this, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		if (username.length() > 15){ // check for long username
+			JOptionPane.showMessageDialog(this, "Your username is too long.", "Error", JOptionPane.ERROR_MESSAGE);
+			return false; //username is too long
+		}
+		for (int i = 0; i < username.length(); i ++){ // check for weird characters
+			if (username.charAt(i) < ' '){
+				JOptionPane.showMessageDialog(this, "Your username contains invalid characters.", "Error", JOptionPane.ERROR_MESSAGE);
+				return false; // contains invalid characters
+			}
+		}
+		for (int i = 0; i < Main.users.length; i ++){ // check for taken usernames
+			if (Main.users[i].substring(0, Main.users[i].indexOf('\u001b')).equals(username)){
+				JOptionPane.showMessageDialog(this, "Sorry, this username is taken.", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
+
+	}
 
 	/*
          * Authenticates the user into the program.
@@ -44,31 +73,26 @@ public class Frame extends JFrame {
 	 * @return whether the log-in was successful
 	 */
 	public boolean authenticate(String username, char[] password){
-		if (username.charAt(0) == ' ' || username.charAt(username.length() - 1) == ' '){
-			JOptionPane.showMessageDialog(this, "Please do not enter leading or trailing spaces.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if (username.length() == 0){
-			JOptionPane.showMessageDialog(this, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if (username.length() > 15){
-			JOptionPane.showMessageDialog(this, "Your username is too long.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false; //username is too long
-		}
-		for (int i = 0; i < username.length(); i ++){
-			if (username.charAt(i) < 32){
-				JOptionPane.showMessageDialog(this, "Your username contains invalid characters.", "Error", JOptionPane.ERROR_MESSAGE);
-				return false; // contains invalid characters
+		for (int i = 0; i < Main.users.length; i ++){ // check for taken usernames
+			StringTokenizer st = new StringTokenizer(Main.users[i], "\u001b");
+			String name = st.nextToken();
+			if (name.compareTo(username) == 0){
+				if (st.nextToken().equals(new String(password))){
+					Main.usernameIndex = i;
+					return true;
+				}
+				else{
+					JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
 			}
-		}
-		for (int i = 0; i < Main.users.length; i ++){
-			if (Main.users[i].substring(0, Main.users[i].indexOf('\u001b')).equals(username)){
-				JOptionPane.showMessageDialog(this, "Sorry, this username is taken.", "Error", JOptionPane.ERROR_MESSAGE);
+			if (name.compareTo(username) > 0){
+				JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 		}
-		return true;
+		JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+		return false;
 	}
 
 	public void mainMenu(){
