@@ -11,6 +11,7 @@ public class Listener implements ActionListener {
 			case "Main Menu": Main.frame.mainMenu(); break; // call main menu
 			case "Settings": Main.frame.settings(); break; // call settings
 			case "Log In": Main.frame.login(); break; // call login
+			case "Log Out": User.logout(); Main.frame.intro(); break; // call logout and go back to start page
 			case "Register": Main.frame.register(); break; // call register
 		}
 	}

@@ -22,6 +22,7 @@ public class Settings extends JPanel{
 		super.add(logout);
 		super.add(back);
 		controls.addActionListener(Listener.LISTENER);
+		logout.addActionListener(Listener.LISTENER);
 		back.addActionListener(Listener.LISTENER);
 
 		//set up layout
