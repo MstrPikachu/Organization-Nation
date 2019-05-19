@@ -36,7 +36,6 @@ public class Frame extends JFrame {
 
 	public void login(){
 		back.push(getContentPane());
-		login.setBackground(Color.YELLOW);
 		setContentPane(login);
 		repaint();
 		revalidate();
