@@ -1,13 +1,17 @@
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.util.StringTokenizer;
+import java.util.ArrayDeque;
 
 public class Frame extends JFrame {
+	private ArrayDeque<Container> back = new ArrayDeque<>();
 	private Intro intro = new Intro();
-	private MainMenu mainMenu = new MainMenu();
+	private MainMenu mainMenu;
 	private Settings settings = new Settings();
 	private Login login = new Login();
-	//private Register register = new Register();
+	private Register register = new Register();
 	public static final Dimension preferredSize = new Dimension(640, 480);
 	public Frame(){
 		//set up JFrame
@@ -18,52 +22,35 @@ public class Frame extends JFrame {
 		super.pack();
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+
+	public void back(){
+		setContentPane(back.poll());
+	}
 	public void intro(){
-		super.setContentPane(intro);
+		back.push(getContentPane());
+		setContentPane(intro);
 		intro.splashScreen();
 		repaint();
 		revalidate();
 	}
 
 	public void login(){
+		back.push(getContentPane());
 		login.setBackground(Color.YELLOW);
-		super.setContentPane(login);
+		setContentPane(login);
 		repaint();
 		revalidate();
+		login.requestFocus();
 	}
 
 	public void register(){
-		//super.setContentPane(register);
+		back.push(getContentPane());
+		setContentPane(register);
 		repaint();
 		revalidate();
 	}
 	public boolean registerUser(String username, char[] password){
-		if (username.charAt(0) == ' ' || username.charAt(username.length() - 1) == ' '){ // check for leading or trailing spaces
-			JOptionPane.showMessageDialog(this, "Please do not enter leading or trailing spaces.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if (username.length() == 0){ // check for empty username
-			JOptionPane.showMessageDialog(this, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if (username.length() > 15){ // check for long username
-			JOptionPane.showMessageDialog(this, "Your username is too long.", "Error", JOptionPane.ERROR_MESSAGE);
-			return false; //username is too long
-		}
-		for (int i = 0; i < username.length(); i ++){ // check for weird characters
-			if (username.charAt(i) < ' '){
-				JOptionPane.showMessageDialog(this, "Your username contains invalid characters.", "Error", JOptionPane.ERROR_MESSAGE);
-				return false; // contains invalid characters
-			}
-		}
-		for (int i = 0; i < Main.users.length; i ++){ // check for taken usernames
-			if (Main.users[i].substring(0, Main.users[i].indexOf('\u001b')).equals(username)){
-				JOptionPane.showMessageDialog(this, "Sorry, this username is taken.", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		}
-		return true;
-
+		return User.register(username, password);
 	}
 
 	/*
@@ -73,36 +60,25 @@ public class Frame extends JFrame {
 	 * @return whether the log-in was successful
 	 */
 	public boolean authenticate(String username, char[] password){
-		for (int i = 0; i < Main.users.length; i ++){ // check for taken usernames
-			StringTokenizer st = new StringTokenizer(Main.users[i], "\u001b");
-			String name = st.nextToken();
-			if (name.compareTo(username) == 0){
-				if (st.nextToken().equals(new String(password))){
-					Main.usernameIndex = i;
-					return true;
-				}
-				else{
-					JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-			}
-			if (name.compareTo(username) > 0){
-				JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		}
-		JOptionPane.showMessageDialog(this, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
-		return false;
+		return User.login(username, password);
+	}
+
+	public void logout(){
+		User.logout();
 	}
 
 	public void mainMenu(){
-		super.setContentPane(mainMenu);
+		back.push(getContentPane());
+		if (mainMenu == null) // must wait to login before initialization
+			mainMenu = new MainMenu();
+		setContentPane(mainMenu);
 		repaint();
 		revalidate();
 	}
 
 	public void settings(){
-		super.setContentPane(settings);
+		back.push(getContentPane());
+		setContentPane(settings);
 		repaint();
 		revalidate();
 	}
@@ -110,5 +86,11 @@ public class Frame extends JFrame {
 	@Override
 	public Dimension getPreferredSize(){
 		return preferredSize;
+	}
+	@Override
+	public void setContentPane(Container contentPane){
+		super.setContentPane(contentPane);
+		repaint();
+		revalidate();
 	}
 }

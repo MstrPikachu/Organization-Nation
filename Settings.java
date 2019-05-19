@@ -13,11 +13,13 @@ public class Settings extends JPanel{
 		//declare components
 		JLabel title = new JLabel("Settings");
 		JButton controls = new JButton("Controls");
+		JButton logout = new JButton("Log Out");
 		JButton back = new JButton("Back");
 
 		//add components
 		super.add(title);
 		super.add(controls);
+		super.add(logout);
 		super.add(back);
 		controls.addActionListener(Listener.LISTENER);
 		back.addActionListener(Listener.LISTENER);
@@ -27,7 +29,10 @@ public class Settings extends JPanel{
 		layout.putConstraint(SpringLayout.NORTH, title, 50, SpringLayout.NORTH, this);
 
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, controls, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, controls, 0, SpringLayout.VERTICAL_CENTER, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, controls, -50, SpringLayout.VERTICAL_CENTER, this);
+
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, logout, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, logout, 50, SpringLayout.VERTICAL_CENTER, this);
 
 		layout.putConstraint(SpringLayout.WEST, back, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, back, -10, SpringLayout.SOUTH, this);
