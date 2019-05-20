@@ -12,6 +12,7 @@ public class Frame extends JFrame {
 	private Settings settings = new Settings();
 	private Login login = new Login();
 	private Register register = new Register();
+	private LevelSelect levelSelect;
 	public static final Dimension preferredSize = new Dimension(640, 480);
 	public Frame(){
 		//set up JFrame
@@ -26,6 +27,7 @@ public class Frame extends JFrame {
 	public void back(){
 		setContentPane(back.poll());
 	}
+
 	public void intro(){
 		back.push(getContentPane());
 		setContentPane(intro);
@@ -68,8 +70,8 @@ public class Frame extends JFrame {
 
 	public void mainMenu(){
 		back.push(getContentPane());
-		if (mainMenu == null) // must wait to login before initialization
-			mainMenu = new MainMenu();
+		mainMenu = new MainMenu(); // make a new JPanel for the new user
+		levelSelect = new LevelSelect();
 		setContentPane(mainMenu);
 		repaint();
 		revalidate();
@@ -82,14 +84,15 @@ public class Frame extends JFrame {
 		revalidate();
 	}
 
+	public void levelSelect(){
+		back.push(getContentPane());
+		setContentPane(levelSelect);
+		repaint();
+		revalidate();
+	}
+
 	@Override
 	public Dimension getPreferredSize(){
 		return preferredSize;
-	}
-	@Override
-	public void setContentPane(Container contentPane){
-		super.setContentPane(contentPane);
-		repaint();
-		revalidate();
 	}
 }
