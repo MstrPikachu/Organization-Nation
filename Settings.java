@@ -3,7 +3,18 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.SpringLayout;
 
+/**
+ * The settings panel.
+ *
+ * @author Peter Lin
+ * @version 1.5
+ */
 public class Settings extends JPanel{
+
+	/**
+	 * The class constructor.
+	 * Should only be called after a user is logged in.
+	 */
 	public Settings(){
 		//set up panel
 		super();

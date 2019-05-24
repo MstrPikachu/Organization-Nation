@@ -1,7 +1,19 @@
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * The main menu panel.
+ *
+ * @author Peter Lin
+ * @version 1.2
+ */
+
 public class MainMenu extends JPanel {
+
+	/**
+	 * The class constructor.
+	 * Must only be called after a valid user is logged in.
+	 */
 	public MainMenu() {
 		//initialize JPanel
 		super();

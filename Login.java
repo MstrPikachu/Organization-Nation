@@ -3,9 +3,23 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * The login menu.
+ * This class is a GUI that takes the username and password and logs the user in if they are correct.
+ *
+ * @author Peter Lin
+ * @version 1.1
+ */
+
 public class Login extends JPanel{
+	// The text field for the username.
 	private JTextField username;
+	// The text field for the password.
 	private JPasswordField password;
+
+	/**
+	 * The class constructor.
+	 */
 	public Login(){
 		//set up panel
 		super();
@@ -57,6 +71,10 @@ public class Login extends JPanel{
 		layout.putConstraint(SpringLayout.WEST, back, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, back, -10, SpringLayout.SOUTH, this);
 	}
+
+	/**
+	 * Attempts to set the cursor to the username text field.
+	 */
 	public void requestFocus(){
 		username.requestFocusInWindow();
 	}

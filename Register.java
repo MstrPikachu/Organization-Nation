@@ -3,9 +3,22 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * The register menu for registering new users.
+ *
+ * @author Peter Lin
+ * @version 1.8
+ */
+
 public class Register extends JPanel{
+	// The username text field.
 	private JTextField username;
+	// The password text fields.
 	private JPasswordField password, password2;
+
+	/**
+	 * The class constructor.
+	 */
 	public Register(){
 		//set up panel
 		super();
@@ -73,6 +86,10 @@ public class Register extends JPanel{
 		layout.putConstraint(SpringLayout.WEST, back, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, back, -10, SpringLayout.SOUTH, this);
 	}
+
+	/**
+	 * Attempts to set the focus in the username text field.
+	 */
 	public void requestFocus(){
 		username.requestFocusInWindow();
 	}

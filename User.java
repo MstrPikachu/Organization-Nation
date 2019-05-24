@@ -2,12 +2,23 @@ import java.io.*;
 import javax.swing.JOptionPane;
 import java.util.StringTokenizer;
 
+/**
+ * This manages the users and their profiles.
+ *
+ * @author Peter Lin
+ * @version 1.9
+ */
+
 public class User{
 	private static String[] users;
 	private static int index;
 	private static int n;
 	private static String username;
 	private static char[] password;
+
+	/**
+	 * This reads the users from a data file.
+	 */
 	public static void read(){
 		try{
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/users.dat")));
@@ -21,23 +32,52 @@ public class User{
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Gets the current user as a <code>String</code> delimited with escape characters.
+	 *
+	 * @return the String containing the profile, or null if no user is logged in.
+	 */
 	public static String getUser(){
 		if (index == 0)
 			return null;
 		return users[index];
 	}
+
+	/**
+	 * Gets the username of the current user.
+	 *
+	 * @return the username of the logged in user, or null if no user is logged in.
+	 */
 	public static String getUsername(){
 		return username;
 	}
 
+	/**
+	 * Gets the password of the current user.
+	 *
+	 * @return the password of the logged in user, or null if no user is logged in.
+	 */
 	public static char[] getPassword(){
 		return password;
 	}
 
+	/**
+	 * Logs out the current user.
+	 * User should be redirected to the intro menu afterwards.
+	 */
 	public static void logout(){
 		index = 0;
+		read();
 	}
 
+	/**
+	 * Logs in a user with given credentials.
+	 *
+	 * @param username the username to log in with
+	 * @param password the password to log in with
+	 * @return true if the login was successful, otherwise false
+	 */
 	public static boolean login(String username, char[] password){
 		for (int i = 0; i < users.length; i ++){ // check for taken usernames
 			StringTokenizer st = new StringTokenizer(users[i], "\u001b");
@@ -51,12 +91,21 @@ public class User{
 				}
 				return false;
 			}
-			if (name.compareTo(username) > 0){
+			else if (name.compareTo(username) > 0){
 				return false;
 			}
 		}
 		return false;
 	}
+
+	/**
+	 * Registers in a user with given credentials.
+	 *
+	 * @param username the username to register with
+	 * @param password the password to register with
+	 * @return true if the registration was successful, otherwise false
+	 */
+
 	public static boolean register(String username, char[] password){
 		if (username.length() == 0){
 			JOptionPane.showMessageDialog(Main.frame, "Please enter a username.", "Error", JOptionPane.ERROR_MESSAGE);
