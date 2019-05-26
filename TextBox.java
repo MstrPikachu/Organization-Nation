@@ -8,7 +8,7 @@ import javax.swing.*;
  * @version 1.1
  */
 
-public class TextBox extends JComponent{
+public class TextBox extends JPanel{
 	private JLabel text;
 	private Dimension size;
 	private Dimension textSize;
@@ -21,15 +21,16 @@ public class TextBox extends JComponent{
 	 */
 	public TextBox(String str){
 		super();
+		SpringLayout layout = new SpringLayout();
 		text = new JLabel(str);
+
+		super.add(text);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, text, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, text, 0, SpringLayout.VERTICAL_CENTER, this);
+
 		textSize = text.getPreferredSize();
 		size = new Dimension(textSize.width + 10, textSize.height + 10);
-	}
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		g.setColor(Color.WHITE);
-		g.fillRect(-5, -5, textSize.width + 10, textSize.height + 10);
+		setBackground(Color.WHITE);
 	}
 	@Override
 	public Dimension getPreferredSize(){
