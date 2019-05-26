@@ -11,6 +11,7 @@ public class Listener implements ActionListener {
 			case "Log In": Main.frame.login(); break; // call login
 			case "Log Out": User.logout(); Main.frame.intro(); break; // call logout and go back to start page
 			case "Register": Main.frame.register(); break; // call register
+			case "Level 1": Main.frame.levelOne(); break;
 		}
 	}
 }

@@ -22,6 +22,9 @@ public class LevelSelect extends JPanel{
 		super.add(three);
 		super.add(back);
 
+		one.addActionListener(Listener.LISTENER);
+		back.addActionListener(Listener.LISTENER);
+
 		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.NORTH, title, 50, SpringLayout.NORTH, this);

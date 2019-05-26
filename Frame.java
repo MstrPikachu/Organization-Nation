@@ -29,6 +29,8 @@ public class Frame extends JFrame {
 	private Register register = new Register();
 	// The level selection menu. 
 	private LevelSelect levelSelect;
+	// The level 1 screen.
+	private LevelOne levelOne = new LevelOne();
 	/** The <code>Dimension</code> of this <code>Frame</code>. */
 	public static final Dimension preferredSize = new Dimension(640, 480);
 
@@ -119,6 +121,13 @@ public class Frame extends JFrame {
 	public void levelSelect(){
 		back.push(getContentPane());
 		setContentPane(levelSelect);
+		repaint();
+		revalidate();
+	}
+
+	public void levelOne(){
+		back.push(getContentPane());
+		setContentPane(levelOne);
 		repaint();
 		revalidate();
 	}
