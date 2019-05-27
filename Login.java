@@ -79,6 +79,11 @@ public class Login extends JPanel{
 		username.requestFocusInWindow();
 	}
 
+	@Override
+	public Dimension getPreferredSize(){
+		return Frame.preferredSize;
+	}
+
 	class Listener implements ActionListener{
 		public void actionPerformed(ActionEvent ae){
 			switch (ae.getActionCommand()){

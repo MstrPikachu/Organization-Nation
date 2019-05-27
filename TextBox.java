@@ -5,7 +5,7 @@ import javax.swing.*;
  * This class represents text inside a box.
  *
  * @author Peter Lin
- * @version 1.1
+ * @version 1.2
  */
 
 public class TextBox extends JPanel{

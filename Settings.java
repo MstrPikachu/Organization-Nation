@@ -55,4 +55,8 @@ public class Settings extends JPanel{
 		super.paintComponent(g);
 		//add drawings later
 	}
+	@Override
+	public Dimension getPreferredSize(){
+		return Frame.preferredSize;
+	}
 }

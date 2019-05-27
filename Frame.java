@@ -31,8 +31,8 @@ public class Frame extends JFrame {
 	private LevelSelect levelSelect;
 	// The level 1 screen.
 	private LevelOne levelOne = new LevelOne();
-	/** The <code>Dimension</code> of this <code>Frame</code>. */
-	public static final Dimension preferredSize = new Dimension(640, 480);
+	/** The <code>Dimension</code> of this <code>Frame</code>'s contentPane. */
+	public static final Dimension preferredSize = new Dimension(640, 400);
 
 	/**
 	 * The class constructor, making an empty <code>JFrame</code>.
@@ -125,15 +125,25 @@ public class Frame extends JFrame {
 		revalidate();
 	}
 
+	/**
+	 * Displays the first level.
+	 */
 	public void levelOne(){
 		back.push(getContentPane());
 		setContentPane(levelOne);
+		pack();
 		repaint();
 		revalidate();
 	}
-
+	/**
+	 * Stops the timer if the previous content pane was timed.
+	 *{@inheritDoc}
+	 */
 	@Override
-	public Dimension getPreferredSize(){
-		return preferredSize;
+	public void setContentPane(Container container){
+		if (getContentPane() instanceof Timed)
+			((Timed)getContentPane()).getTimer().stop();
+		super.setContentPane(container);
+		pack();
 	}
 }

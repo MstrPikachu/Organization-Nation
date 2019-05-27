@@ -79,6 +79,10 @@ public class Intro extends JPanel{
 		timer.start();
 	}	
 
+	@Override
+	public Dimension getPreferredSize(){
+		return Frame.preferredSize;
+	}
 
 	@Override
 	public void paintComponent(Graphics g){

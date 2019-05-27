@@ -41,4 +41,9 @@ public class LevelSelect extends JPanel{
 		layout.putConstraint(SpringLayout.WEST, back, 10, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.SOUTH, back, -10, SpringLayout.SOUTH, this);
 	}
+
+	@Override
+	public Dimension getPreferredSize(){
+		return Frame.preferredSize;
+	}
 }

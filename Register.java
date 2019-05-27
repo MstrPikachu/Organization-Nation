@@ -94,6 +94,11 @@ public class Register extends JPanel{
 		username.requestFocusInWindow();
 	}
 
+	@Override
+	public Dimension getPreferredSize(){
+		return Frame.preferredSize;
+	}
+
 	class Listener implements ActionListener{
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent ae){
