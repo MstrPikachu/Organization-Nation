@@ -20,7 +20,7 @@ public class LevelOne extends JPanel{
 	private int maxX, maxY;
 
 	private SpringLayout layout = new SpringLayout();
-	TextBox box;
+	TextBox box, organization, other;
 	MouseAdapter adapter = new MouseAdapter();
 	public LevelOne(){
 		//set up panel
@@ -28,7 +28,9 @@ public class LevelOne extends JPanel{
 		super.setLayout(layout);
 
 		//declare components
-		box = new TextBox("Test");
+		box = new TextBox("Hannah");
+		organization = new TextBox("Organization", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
+		other = new TextBox("Other", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
 
 		maxX = Frame.preferredSize.width - box.getPreferredSize().width;
 		maxY = Frame.preferredSize.height - box.getPreferredSize().height;
@@ -37,21 +39,20 @@ public class LevelOne extends JPanel{
 
 		//add components
 		super.add(box);
+		super.add(organization);
+		super.add(other);
+		organization.setPreferredSize(null);
+		other.setPreferredSize(null);
 		box.addMouseListener(adapter);
 		box.addMouseMotionListener(adapter);
 		layout.putConstraint(SpringLayout.WEST, box, thisX, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, box, thisY, SpringLayout.NORTH, this);
-	}
 
-	public void changeBox(TextBox box){
-		remove(this.box);
-		add(this.box = box);
-		maxX = 320 - box.getPreferredSize().width / 2;
-		maxY = 320 - box.getPreferredSize().height / 2;
-		thisX = maxX / 2;
-		thisY = maxY / 2;
-		box.addMouseListener(adapter);
-		box.addMouseMotionListener(adapter);
+		layout.putConstraint(SpringLayout.WEST, organization, 20, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.SOUTH, organization, -20, SpringLayout.SOUTH, this);
+
+		layout.putConstraint(SpringLayout.EAST, other, -20, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.SOUTH, other, -20, SpringLayout.SOUTH, this);
 	}
 
 	@Override
