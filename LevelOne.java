@@ -28,7 +28,7 @@ public class LevelOne extends JPanel{
 		super.setLayout(layout);
 
 		//declare components
-		box = new TextBox("Hannah");
+		box = new TextBox("Test");
 		organization = new TextBox("Organization", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
 		other = new TextBox("Other", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
 
@@ -65,16 +65,23 @@ public class LevelOne extends JPanel{
 			x = e.getXOnScreen();
 			y = e.getYOnScreen();
 		}
+		public void mouseReleased(MouseEvent e){
+			//check if it has been sorted
+		}
 
 		@Override
 		public void mouseDragged(MouseEvent e){
 			dx = e.getXOnScreen() - x;
-			x += dx;
 			dy = e.getYOnScreen() - y;
-			y += dy;
-			layout.putConstraint(SpringLayout.WEST, box, thisX = Math.min(Math.max(0, thisX + dx), maxX), SpringLayout.WEST, LevelOne.this);
-			layout.putConstraint(SpringLayout.NORTH, box, thisY = Math.min(Math.max(0, thisY + dy), maxY), SpringLayout.NORTH, LevelOne.this);
-			repaint();
+			if (thisX + dx >= 0 && thisX + dx <= maxX){
+				layout.putConstraint(SpringLayout.WEST, box, thisX = thisX + dx, SpringLayout.WEST, LevelOne.this);
+				x += dx;
+			}
+			if (thisY + dy >= 0 && thisY + dy <= maxY){
+				layout.putConstraint(SpringLayout.NORTH, box, thisY = thisY + dy, SpringLayout.NORTH, LevelOne.this);
+				y += dy;
+			}
+			paintImmediately(thisX, thisY, 0, 0);
 			revalidate();
 		}
 	}
