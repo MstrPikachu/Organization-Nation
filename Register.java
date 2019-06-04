@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
 
 /**
  * The register menu for registering new users.
@@ -45,15 +46,13 @@ public class Register extends JPanel{
 		super.add(register);
 		super.add(back);
 
-		Listener listener = new Listener();
-		username.setActionCommand("Username");
-		username.addActionListener(listener);
-		password.setActionCommand("Password");
-		password.addActionListener(listener);
-		password2.setActionCommand("Password2");
-		password2.addActionListener(listener);
-		register.addActionListener(listener);
-		back.addActionListener(listener);
+		//add actionlisteners
+		username.addActionListener((ActionListener)EventHandler.create(ActionListener.class, password, "requestFocus"));
+		password.addActionListener((ActionListener)EventHandler.create(ActionListener.class, password2, "requestFocus"));
+		ActionListener registerListener = (ActionListener)EventHandler.create(ActionListener.class, this, "register");
+		password2.addActionListener(registerListener);
+		register.addActionListener(registerListener);
+		back.addActionListener((ActionListener)EventHandler.create(ActionListener.class, Main.frame, "back"));
 		
 		//set up layout
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 50, SpringLayout.NORTH, this);
@@ -94,25 +93,15 @@ public class Register extends JPanel{
 		username.requestFocusInWindow();
 	}
 
+	public void register(){
+		if (!password.getText().equals(password2.getText()))
+			JOptionPane.showMessageDialog(Main.frame, "Your passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+		else if (User.register(username.getText(), password.getPassword()))
+			Main.frame.mainMenu();
+	}
+
 	@Override
 	public Dimension getPreferredSize(){
 		return Frame.preferredSize;
-	}
-
-	class Listener implements ActionListener{
-		@SuppressWarnings("deprecation")
-		public void actionPerformed(ActionEvent ae){
-			switch (ae.getActionCommand()){
-				case "Back": Main.frame.back();
-				case "Username": password.requestFocus(); break;
-				case "Password": password2.requestFocus(); break;
-				case "Password2":
-				case "Register!": if (!password.getText().equals(password2.getText()))
-							JOptionPane.showMessageDialog(Main.frame, "Your passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
-						else if (User.register(username.getText(), password.getPassword()))
-							Main.frame.mainMenu();
-						break;
-			}
-		}
 	}
 }

@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
 
 /**
  * The login menu.
@@ -43,12 +44,11 @@ public class Login extends JPanel{
 		super.add(back);
 
 		Listener listener = new Listener();
-		username.setActionCommand("Username");
-		username.addActionListener(listener);
-		password.setActionCommand("Password");
-		password.addActionListener(listener);
-		login.addActionListener(listener);
-		back.addActionListener(listener);
+		username.addActionListener((ActionListener)EventHandler.create(ActionListener.class, password, "requestFocus"));
+		ActionListener loginListener = (ActionListener)EventHandler.create(ActionListener.class, this, "login");
+		password.addActionListener(loginListener);
+		login.addActionListener(loginListener);
+		back.addActionListener((ActionListener)EventHandler.create(ActionListener.class, Main.frame, "back"));
 		
 		//set up layout
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 50, SpringLayout.NORTH, this);
@@ -78,24 +78,16 @@ public class Login extends JPanel{
 	public void requestFocus(){
 		username.requestFocusInWindow();
 	}
+	public void login(){
+		if (User.login(username.getText(), password.getPassword()))
+			Main.frame.mainMenu();
+		else
+			JOptionPane.showMessageDialog(Main.frame, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
 
 	@Override
 	public Dimension getPreferredSize(){
 		return Frame.preferredSize;
-	}
-
-	class Listener implements ActionListener{
-		public void actionPerformed(ActionEvent ae){
-			switch (ae.getActionCommand()){
-				case "Back": Main.frame.back();
-				case "Username": password.requestFocus(); break;
-				case "Password":
-				case "Log In!": if (User.login(username.getText(), password.getPassword()))
-							Main.frame.mainMenu();
-						else
-							JOptionPane.showMessageDialog(Main.frame, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
-						break;
-			}
-		}
 	}
 }

@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * This stores the contents of the first level.
@@ -18,10 +19,20 @@ public class LevelOne extends JPanel{
 	private int thisX, thisY;
 	//max coordinates of text box without going offscreen
 	private int maxX, maxY;
+	//loop counter
+	private int i;
 
 	private SpringLayout layout = new SpringLayout();
-	TextBox box, organization, other;
-	MouseAdapter adapter = new MouseAdapter();
+	private TextBox box, organization, other;
+	private MouseAdapter adapter = new MouseAdapter();
+
+	//If the text box is about organization or not
+	private boolean isOrganization;
+	//If the mouse is in the panel
+	private boolean inPanel;
+
+	private Polygon checkmark, xmark;
+	BufferedImage checkImage, xImage, content;
 	public LevelOne(){
 		//set up panel
 		super();
@@ -29,29 +40,35 @@ public class LevelOne extends JPanel{
 
 		//declare components
 		box = new TextBox("Test");
-		organization = new TextBox("Organization", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
-		other = new TextBox("Other", Frame.preferredSize.width / 2 - 40, box.getPreferredSize().height);
+		organization = new TextBox("Organization");
+		other = new TextBox("Other");
 
+		//initialize variables
 		maxX = Frame.preferredSize.width - box.getPreferredSize().width;
 		maxY = Frame.preferredSize.height - box.getPreferredSize().height;
 		thisX = maxX / 2;
 		thisY = maxY / 2;
+		checkmark = new Polygon(new int[]{240, 320, 480, 480, 320, 240}, new int[]{250, 300, 200, 225, 325, 275}, 6);
+		checkImage = new BufferedImage(Frame.preferredSize.width, Frame.preferredSize.height, BufferedImage.TYPE_4BYTE_ABGR);
+		xImage = new BufferedImage(Frame.preferredSize.width, Frame.preferredSize.height, BufferedImage.TYPE_4BYTE_ABGR);
 
 		//add components
 		super.add(box);
 		super.add(organization);
 		super.add(other);
-		organization.setPreferredSize(null);
-		other.setPreferredSize(null);
 		box.addMouseListener(adapter);
 		box.addMouseMotionListener(adapter);
+
+		//set up layout
 		layout.putConstraint(SpringLayout.WEST, box, thisX, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, box, thisY, SpringLayout.NORTH, this);
 
 		layout.putConstraint(SpringLayout.WEST, organization, 20, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, organization, -20, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.SOUTH, organization, -20, SpringLayout.SOUTH, this);
 
 		layout.putConstraint(SpringLayout.EAST, other, -20, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.WEST, other, 20, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.SOUTH, other, -20, SpringLayout.SOUTH, this);
 	}
 
@@ -66,7 +83,33 @@ public class LevelOne extends JPanel{
 			y = e.getYOnScreen();
 		}
 		public void mouseReleased(MouseEvent e){
-			//check if it has been sorted
+			//check to see where the text box is
+			boolean inOrganization = thisX < Frame.preferredSize.width / 2 - 20 && thisX + box.getPreferredSize().width > 20 && thisY + box.getPreferredSize().height > Frame.preferredSize.height - 20 - organization.getPreferredSize().height;
+			boolean inOther = thisX + box.getPreferredSize().width > Frame.preferredSize.width / 2 + 20 && thisX < Frame.preferredSize.width - 20 && thisY + box.getPreferredSize().height > Frame.preferredSize.height - 20 - other.getPreferredSize().height;
+			if (inOrganization ^ inOther){ // in only one of the boxes
+				if (inOrganization ^ isOrganization){ // Wrong!
+
+				}
+				else{ // Right!
+					content = checkImage;
+					Graphics2D g = checkImage.createGraphics();
+					g.setColor(Color.GREEN);
+					Timer timer = new Timer(1, null);
+					timer.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent ae){
+							g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, i++ / 100f));
+							g.fillPolygon(checkmark);
+							repaint();
+							System.out.println(i);
+							if (i == 100){
+								timer.stop();
+							}			
+						}
+					});
+					timer.start();
+
+				}
+			}
 		}
 
 		@Override
@@ -75,14 +118,19 @@ public class LevelOne extends JPanel{
 			dy = e.getYOnScreen() - y;
 			if (thisX + dx >= 0 && thisX + dx <= maxX){
 				layout.putConstraint(SpringLayout.WEST, box, thisX = thisX + dx, SpringLayout.WEST, LevelOne.this);
-				x += dx;
 			}
 			if (thisY + dy >= 0 && thisY + dy <= maxY){
 				layout.putConstraint(SpringLayout.NORTH, box, thisY = thisY + dy, SpringLayout.NORTH, LevelOne.this);
-				y += dy;
 			}
+			x += dx;
+			y += dy;
 			paintImmediately(thisX, thisY, 0, 0);
 			revalidate();
 		}
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		g.drawImage(content, 0, 0, this);
 	}
 }

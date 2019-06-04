@@ -18,19 +18,19 @@ public class Frame extends JFrame {
 	// A list of previous frames, and their order, allowing the user to "go back". 
 	private ArrayDeque<Container> back = new ArrayDeque<>();
 	// The intro menu. 
-	private Intro intro = new Intro();
+	private Intro intro;
 	// The main menu. 
 	private MainMenu mainMenu;
 	// The settings menu. 
-	private Settings settings = new Settings();
+	private Settings settings;
 	// The login menu. 
-	private Login login = new Login();
+	private Login login;
 	// The register user menu. 
-	private Register register = new Register();
+	private Register register;
 	// The level selection menu. 
 	private LevelSelect levelSelect;
 	// The level 1 screen.
-	private LevelOne levelOne = new LevelOne();
+	private LevelOne levelOne;
 	/** The <code>Dimension</code> of this <code>Frame</code>'s contentPane. */
 	public static final Dimension preferredSize = new Dimension(640, 400);
 
@@ -43,9 +43,17 @@ public class Frame extends JFrame {
 		super("Organization Nation");
 
 		//finish JFrame
+		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void initializeContent(){
+		intro = new Intro();
+		settings = new Settings();
+		login = new Login();
+		register = new Register();
+		levelOne = new LevelOne();
 		super.setVisible(true);
 		super.pack();
-		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	/**
@@ -88,6 +96,7 @@ public class Frame extends JFrame {
 		setContentPane(register);
 		repaint();
 		revalidate();
+		register.requestFocus();
 	}
 
 	/**

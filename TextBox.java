@@ -44,6 +44,6 @@ public class TextBox extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, getPreferredSize().width, getPreferredSize().height);
+		g.drawRect(0, 0, getSize().width, getSize().height);
 	}
 }
