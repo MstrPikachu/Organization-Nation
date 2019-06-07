@@ -74,6 +74,7 @@ public class MainMenu extends JPanel implements Timed {
 
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		/*
 		g.setColor(Color.RED);
 		for (int i = 0; i < 20; i ++){
 			g.drawLine(n + i - 80, 0, n + i - 40, 400);
@@ -95,5 +96,6 @@ public class MainMenu extends JPanel implements Timed {
 			g.drawLine(n + i + 560, 0, n + i + 600, 400);
 			g.drawLine(n + i + 600, 0, n + i + 640, 400);
 		}
+		*/
 	}
 }

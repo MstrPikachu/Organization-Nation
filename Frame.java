@@ -96,7 +96,6 @@ public class Frame extends JFrame {
 		setContentPane(register);
 		repaint();
 		revalidate();
-		register.requestFocus();
 	}
 
 	/**

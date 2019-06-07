@@ -93,6 +93,7 @@ public class Register extends JPanel{
 		username.requestFocusInWindow();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void register(){
 		if (!password.getText().equals(password2.getText()))
 			JOptionPane.showMessageDialog(Main.frame, "Your passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);

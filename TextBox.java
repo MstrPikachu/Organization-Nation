@@ -35,6 +35,10 @@ public class TextBox extends JPanel{
 		size = new Dimension(width, height);
 	}
 
+	public void setText(String str){
+		text.setText(str);
+	}
+
 	@Override
 	public Dimension getPreferredSize(){
 		return size == null ? super.getPreferredSize() : size;
