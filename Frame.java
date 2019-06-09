@@ -31,6 +31,9 @@ public class Frame extends JFrame {
 	private LevelSelect levelSelect;
 	// The level 1 screen.
 	private LevelOne levelOne;
+	// The pause menu.
+	private PauseMenu pause;
+
 	/** The <code>Dimension</code> of this <code>Frame</code>'s contentPane. */
 	public static final Dimension preferredSize = new Dimension(640, 400);
 
@@ -46,14 +49,40 @@ public class Frame extends JFrame {
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+
+	/**
+	 * Initializes the internal frames used in this JFrame.
+	 *
+	 */
 	public void initializeContent(){
 		intro = new Intro();
 		settings = new Settings();
 		login = new Login();
 		register = new Register();
-		levelOne = new LevelOne();
+		pause = new PauseMenu();
+		setGlassPane(pause);
 		super.setVisible(true);
 		super.pack();
+	}
+
+	/**
+	 * Pauses the game.
+	 */
+	public void pause(){
+		stopTimer();
+		pause.setVisible(true);
+		repaint();
+		revalidate();
+	}
+
+	/**
+	 * Resumes the game.
+	 */
+	public void resume(){
+		pause.setVisible(false);
+		startTimer();
+		repaint();
+		revalidate();
 	}
 
 	/**
@@ -105,6 +134,7 @@ public class Frame extends JFrame {
 	 * so user information can be updated.
 	 */
 	public void mainMenu(){
+		pause.setVisible(false);
 		back.push(getContentPane());
 		mainMenu = new MainMenu(); // make a new JPanel for the new user
 		levelSelect = new LevelSelect();
@@ -138,19 +168,41 @@ public class Frame extends JFrame {
 	 */
 	public void levelOne(){
 		back.push(getContentPane());
-		setContentPane(levelOne);
+		setContentPane(levelOne = new LevelOne());
 		pack();
 		repaint();
 		revalidate();
 	}
+
+	/**
+	 * Stops the timer of the current content pane.
+	 * Only stops the timer if it implements the Timed interface.
+	 *
+	 * @see Timed
+	 */
+	public void stopTimer(){
+		if (getContentPane() instanceof Timed)
+			((Timed)getContentPane()).getTimer().stop();
+	}
+
+	/**
+	 * Starts the timer of the current content pane.
+	 * Only stops the timer if it implements the Timed interface.
+	 *
+	 * @see Timed
+	 */
+	public void startTimer(){
+		if (getContentPane() instanceof Timed)
+			((Timed)getContentPane()).getTimer().start();
+	}
+
 	/**
 	 * Stops the timer if the previous content pane was timed.
 	 *{@inheritDoc}
 	 */
 	@Override
 	public void setContentPane(Container container){
-		if (getContentPane() instanceof Timed)
-			((Timed)getContentPane()).getTimer().stop();
+		stopTimer();
 		super.setContentPane(container);
 		pack();
 	}

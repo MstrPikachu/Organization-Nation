@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.beans.EventHandler;
 
 /**
  * This stores the contents of the first level.
@@ -37,6 +38,9 @@ public class LevelOne extends JPanel{
 	//the index of the text array
 	private int textIndex;
 
+	//the number of correct sorts
+	private int correct;
+
 	private Polygon checkmark;
 	BufferedImage checkImage, xImage, content;
 
@@ -52,6 +56,7 @@ public class LevelOne extends JPanel{
 		box = new TextBox("");
 		organization = new TextBox("Organization");
 		other = new TextBox("Other");
+		JButton pause = new JButton("Pause");
 
 		shuffle(text);
 		setText(text[0]);
@@ -66,6 +71,8 @@ public class LevelOne extends JPanel{
 		super.add(box);
 		super.add(organization);
 		super.add(other);
+		super.add(pause);
+		pause.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "pause"));
 		box.addMouseListener(adapter);
 		box.addMouseMotionListener(adapter);
 
@@ -77,6 +84,9 @@ public class LevelOne extends JPanel{
 		layout.putConstraint(SpringLayout.EAST, other, -20, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, other, 20, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.SOUTH, other, -20, SpringLayout.SOUTH, this);
+
+		layout.putConstraint(SpringLayout.NORTH, pause, 20, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.EAST, pause, -20, SpringLayout.EAST, this);
 	}
 
 	/**
@@ -128,13 +138,15 @@ public class LevelOne extends JPanel{
 							else if (i == 0 && fadeIn == -1){
 								timer.stop();
 								fadeIn = 1;
-								box.setVisible(true);
+								if (textIndex < text.length)
+									box.setVisible(true);
 							}	
 						}
 					});
 					timer.start();
 				}
 				else{ // Right!
+					correct += 1;
 					content = checkImage;
 					Graphics2D g = checkImage.createGraphics();
 					g.setColor(Color.GREEN);
@@ -151,7 +163,8 @@ public class LevelOne extends JPanel{
 							else if (i == 0 && fadeIn == -1){
 								timer.stop();
 								fadeIn = 1;
-								box.setVisible(true);
+								if (textIndex < text.length)
+									box.setVisible(true);
 							}	
 						}
 					});
@@ -163,7 +176,8 @@ public class LevelOne extends JPanel{
 					revalidate();
 				}
 				else{ // level is done
-					
+					JOptionPane.showMessageDialog(Main.frame, "You sorted " + 100 * correct / text.length + "% of the text correctly.", "Level Complete", JOptionPane.PLAIN_MESSAGE);
+					Main.frame.mainMenu();
 				}
 			}
 		}
