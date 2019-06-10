@@ -12,7 +12,9 @@ import java.beans.EventHandler;
  * @version 1.1
  */
 
-public class Login extends JPanel{
+public class Login extends JPanel implements Timed{
+	//Background timer
+	private Timer timer = new Timer(50, Main.frame.backgroundListener);
 	// The text field for the username.
 	private JTextField username;
 	// The text field for the password.
@@ -78,15 +80,31 @@ public class Login extends JPanel{
 		username.requestFocusInWindow();
 	}
 	public void login(){
-		if (User.login(username.getText(), password.getPassword()))
+		if (User.login(username.getText(), password.getPassword())){
+			username.setText("");
 			Main.frame.mainMenu();
+		}
 		else
 			JOptionPane.showMessageDialog(Main.frame, "Your username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+		password.setText("");
 	}
 
+	@Override
+	public Timer getTimer(){
+		return timer;
+	}
 
 	@Override
 	public Dimension getPreferredSize(){
 		return Frame.preferredSize;
+	}
+
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		for (int i = 0; i < Main.frame.CIRCLES; i ++){
+			g.setColor(Main.frame.colors[i]);
+			g.fillOval((int)Main.frame.x[i], (int)Main.frame.y[i], Main.frame.DIAMETER, Main.frame.DIAMETER);
+		}
 	}
 }

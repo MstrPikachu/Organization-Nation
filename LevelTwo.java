@@ -71,7 +71,11 @@ public class LevelTwo extends Level implements Timed{
 	}
 
 	public void handle(ActionEvent ae){
+		timer.stop();
 		String str = JOptionPane.showInputDialog(Main.frame, "What order does this item go in?", "Item sorting", JOptionPane.QUESTION_MESSAGE);
+		if (str == null)
+			str = "";
+		timer.start();
 		if (str.length() != 1 || str.charAt(0) < '1' || str.charAt(0) > '7'){
 			JOptionPane.showMessageDialog(Main.frame, "Please enter a number from 1-7.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

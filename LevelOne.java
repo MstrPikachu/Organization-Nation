@@ -144,7 +144,7 @@ public class LevelOne extends Level{
 					revalidate();
 				}
 				else{ // level is done
-					JOptionPane.showMessageDialog(Main.frame, "You received " + getPoints() + " points.", "Level Complete", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(Main.frame, "You completed the level with " + getPoints() + " points.", "Level Complete", JOptionPane.PLAIN_MESSAGE);
 					Main.frame.mainMenu();
 				}
 			}

@@ -18,7 +18,6 @@ public class PauseMenu extends JPanel{
 		super();
 		SpringLayout layout = new SpringLayout();
 		super.setLayout(layout);
-		super.setOpaque(false);
 
 		//declare components
 		JButton resume = new JButton("Resume");
@@ -54,7 +53,7 @@ public class PauseMenu extends JPanel{
 		super.paintComponent(g);
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.83f));
 		g.setColor(Color.GRAY);
-		g.fillRect(Frame.preferredSize.width / 2 - 100, Frame.preferredSize.height / 2 - 100, 200, 200);
+		g.fillRect(0, 0, Frame.preferredSize.width, Frame.preferredSize.height);
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 }

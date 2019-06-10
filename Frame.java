@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.util.StringTokenizer;
 import java.util.ArrayDeque;
+import java.beans.EventHandler;
 
 /**
  * This is the frame that contains all the content that is showed to the user.
@@ -37,6 +38,20 @@ public class Frame extends JFrame {
 	private LevelThree levelThree;
 	// The pause menu.
 	private PauseMenu pause;
+	// An empty JPanel.
+	private JPanel empty;
+
+	//background constants
+	public static final int CIRCLES = 9;
+	public static final int DIAMETER = 150;
+	//x, y, and change in x, y values for each circle in the background
+	public double[] x = new double[CIRCLES];
+	public double[] y = new double[CIRCLES];
+	public double[] dx = new double[CIRCLES];
+	public double[] dy = new double[CIRCLES];
+	public Color[] colors = new Color[CIRCLES];
+	public final ActionListener backgroundListener = EventHandler.create(ActionListener.class, this, "updateCircles");
+
 
 	/** The <code>Dimension</code> of this <code>Frame</code>'s contentPane. */
 	public static final Dimension preferredSize = new Dimension(640, 400);
@@ -52,6 +67,16 @@ public class Frame extends JFrame {
 		//finish JFrame
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setResizable(false);
+
+		//make colors and initialize coordinate values
+		for (int i = 0; i < CIRCLES; i ++){
+			double angle = Math.PI / CIRCLES * i;
+			colors[i] = new Color ((int) (127 * Math.sin (angle) + 128), (int) (127 * Math.sin (angle + Math.PI * 2 / 3) + 128), (int) (127 * Math.sin (angle + Math.PI * 4 / 3) + 128), 128);
+			x[i] = Math.random() * (Frame.preferredSize.width - DIAMETER);
+			y[i] = Math.random() * (Frame.preferredSize.height - DIAMETER);
+			dx[i] = Math.random() * -2 + 4;
+			dy[i] = Math.random() * -2 + 4;
+		}
 	}
 
 
@@ -60,14 +85,17 @@ public class Frame extends JFrame {
 	 *
 	 */
 	public void initializeContent(){
+		empty = new JPanel();
+		empty.setPreferredSize(preferredSize);
 		intro = new Intro();
 		settings = new Settings();
 		login = new Login();
 		register = new Register();
 		pause = new PauseMenu();
 		setGlassPane(pause);
-		super.setVisible(true);
 		super.pack();
+		super.setLocationRelativeTo(null);
+		super.setVisible(true);
 	}
 
 	/**
@@ -104,7 +132,6 @@ public class Frame extends JFrame {
 	public void intro(){
 		back.push(getContentPane());
 		setContentPane(intro);
-		intro.splashScreen();
 		repaint();
 		revalidate();
 	}
@@ -182,6 +209,7 @@ public class Frame extends JFrame {
 	 * Displays the first level.
 	 */
 	public void levelOne(){
+		setContentPane(empty);
 		setContentPane(levelOne = new LevelOne());
 		pack();
 		repaint();
@@ -192,18 +220,20 @@ public class Frame extends JFrame {
 	 * Displays the second level.
 	 */
 	public void levelTwo(){
+		setContentPane(empty);
 		setContentPane(levelTwo = new LevelTwo());
 		pack();
 		repaint();
 		revalidate();
-
 	}
 
 	/**
 	 * Displays the third level.
 	 */
 	public void levelThree(){
+		setContentPane(empty);
 		setContentPane(levelThree = new LevelThree());
+		levelThree.requestFocus();
 		pack();
 		repaint();
 		revalidate();
@@ -243,4 +273,18 @@ public class Frame extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Updates the background animation.
+	 */
+	public void updateCircles(){
+		for (int i = 0; i < CIRCLES; i ++){
+			if (x[i] + dx[i] < 0 || x[i] + dx[i] > Frame.preferredSize.width - DIAMETER)
+				dx[i] = -dx[i];
+			if (y[i] + dy[i] < 0 || y[i] + dy[i] > Frame.preferredSize.height - DIAMETER)
+				dy[i] = -dy[i];
+			x[i] += dx[i];
+			y[i] += dy[i];
+		}
+		getContentPane().repaint();
+	}
 }

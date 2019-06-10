@@ -21,7 +21,11 @@ public class User{
 	 */
 	public static void read(){
 		try{
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/users.dat")));
+			BufferedReader br;
+			if (new File(System.getProperty("user.home") + "data/users.dat").exists())
+				br = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.home") + "data/users.dat")));
+			else
+				br = new BufferedReader(new InputStreamReader(User.class.getResourceAsStream("data/users.dat")));
 			n = Integer.parseInt(br.readLine());
 			users = new String[n];
 			for (int i = 0; i < n; i ++){
@@ -144,7 +148,7 @@ public class User{
 				User.username = username;
 				User.password = password;
 				try{
-					PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream("data/users.dat")));
+					PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(System.getProperty("user.home") + "data/users.dat")));
 					pw.println(n + 1);
 					for (int j = 0; j < i; j ++){
 						pw.println(users[j]);

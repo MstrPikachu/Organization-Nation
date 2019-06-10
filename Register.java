@@ -11,7 +11,9 @@ import java.beans.EventHandler;
  * @version 1.8
  */
 
-public class Register extends JPanel{
+public class Register extends JPanel implements Timed{
+	//Background timer
+	private Timer timer = new Timer(50, Main.frame.backgroundListener);
 	// The username text field.
 	private JTextField username;
 	// The password text fields.
@@ -99,10 +101,26 @@ public class Register extends JPanel{
 			JOptionPane.showMessageDialog(Main.frame, "Your passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
 		else if (User.register(username.getText(), password.getPassword()))
 			Main.frame.mainMenu();
+		password.setText("");
+		password2.setText("");
 	}
 
 	@Override
 	public Dimension getPreferredSize(){
 		return Frame.preferredSize;
+	}
+
+	@Override
+	public Timer getTimer(){
+		return timer;
+	}
+
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		for (int i = 0; i < Main.frame.CIRCLES; i ++){
+			g.setColor(Main.frame.colors[i]);
+			g.fillOval((int)Main.frame.x[i], (int)Main.frame.y[i], Main.frame.DIAMETER, Main.frame.DIAMETER);
+		}
 	}
 }

@@ -33,6 +33,7 @@ public class Level extends JPanel{
 
 		//declare components
 		JButton pause = new JButton("Pause");
+		pause.setFocusable(false);
 		pointsLabel = new JLabel("0 Points");
 
 		//add components
