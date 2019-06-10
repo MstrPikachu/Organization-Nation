@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.beans.EventHandler;
 
 public class LevelSelect extends JPanel{
 	public LevelSelect(){
@@ -22,8 +24,10 @@ public class LevelSelect extends JPanel{
 		super.add(three);
 		super.add(back);
 
-		one.addActionListener(Listener.LISTENER);
-		back.addActionListener(Listener.LISTENER);
+		one.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "levelOne"));
+		two.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "levelTwo"));
+		three.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "levelThree"));
+		back.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "back"));
 
 		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);

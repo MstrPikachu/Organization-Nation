@@ -31,6 +31,10 @@ public class Frame extends JFrame {
 	private LevelSelect levelSelect;
 	// The level 1 screen.
 	private LevelOne levelOne;
+	// The level 2 screen.
+	private LevelTwo levelTwo;
+	// The level 3 screen.
+	private LevelThree levelThree;
 	// The pause menu.
 	private PauseMenu pause;
 
@@ -47,6 +51,7 @@ public class Frame extends JFrame {
 
 		//finish JFrame
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super.setResizable(false);
 	}
 
 
@@ -117,6 +122,15 @@ public class Frame extends JFrame {
 	}
 
 	/**
+	 * Logs the user out.
+	 */
+	public void logout(){
+		User.logout();
+		back.clear();
+		intro();
+	}
+
+	/**
 	 * Displays the register user menu.
 	 * Sets the mouse cursor in the username text field.
 	 */
@@ -135,6 +149,7 @@ public class Frame extends JFrame {
 	 */
 	public void mainMenu(){
 		pause.setVisible(false);
+		back.clear();
 		back.push(getContentPane());
 		mainMenu = new MainMenu(); // make a new JPanel for the new user
 		levelSelect = new LevelSelect();
@@ -167,8 +182,28 @@ public class Frame extends JFrame {
 	 * Displays the first level.
 	 */
 	public void levelOne(){
-		back.push(getContentPane());
 		setContentPane(levelOne = new LevelOne());
+		pack();
+		repaint();
+		revalidate();
+	}
+
+	/**
+	 * Displays the second level.
+	 */
+	public void levelTwo(){
+		setContentPane(levelTwo = new LevelTwo());
+		pack();
+		repaint();
+		revalidate();
+
+	}
+
+	/**
+	 * Displays the third level.
+	 */
+	public void levelThree(){
+		setContentPane(levelThree = new LevelThree());
 		pack();
 		repaint();
 		revalidate();
@@ -204,6 +239,8 @@ public class Frame extends JFrame {
 	public void setContentPane(Container container){
 		stopTimer();
 		super.setContentPane(container);
+		startTimer();
 		pack();
 	}
+
 }

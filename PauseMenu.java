@@ -52,8 +52,8 @@ public class PauseMenu extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.77f));
-		g.setColor(Color.RED);
+		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.83f));
+		g.setColor(Color.GRAY);
 		g.fillRect(Frame.preferredSize.width / 2 - 100, Frame.preferredSize.height / 2 - 100, 200, 200);
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}

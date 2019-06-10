@@ -43,12 +43,11 @@ public class Login extends JPanel{
 		super.add(login);
 		super.add(back);
 
-		Listener listener = new Listener();
-		username.addActionListener((ActionListener)EventHandler.create(ActionListener.class, password, "requestFocus"));
-		ActionListener loginListener = (ActionListener)EventHandler.create(ActionListener.class, this, "login");
+		username.addActionListener(EventHandler.create(ActionListener.class, password, "requestFocus"));
+		ActionListener loginListener = EventHandler.create(ActionListener.class, this, "login");
 		password.addActionListener(loginListener);
 		login.addActionListener(loginListener);
-		back.addActionListener((ActionListener)EventHandler.create(ActionListener.class, Main.frame, "back"));
+		back.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "back"));
 		
 		//set up layout
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 50, SpringLayout.NORTH, this);

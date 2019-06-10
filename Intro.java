@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.beans.EventHandler;
 
 /**
  * The introduction panel for the that has a custom animation.
@@ -38,8 +39,8 @@ public class Intro extends JPanel{
 		super.add(title);
 		super.add(login);
 		super.add(register);
-		login.addActionListener(Listener.LISTENER);
-		register.addActionListener(Listener.LISTENER);
+		login.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "login"));
+		register.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "register"));
 
 		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);

@@ -11,23 +11,16 @@ import java.beans.EventHandler;
  * @version 1.1
  */
 
-public class LevelOne extends JPanel{
-	//coordinates of mouse relative to text box
-	private int x, y;
-	//change in mouse coordinates
-	private int dx, dy;
-	//coordinates of text box relative to this JPanel
-	private int thisX, thisY;
-	//max coordinates of text box without going offscreen
-	private int maxX, maxY;
+public class LevelOne extends Level{
+	//Level instructions
+	private static final String instructions = "<html><body width='400'>The first level will be where you practice organizing, and you learn about organization! You will be required to organize a set of text boxes by clicking on all the ones with information about the problem that lack of organizational skills pose. The other boxes will contain information on other random topics, such as giraffes. You will collect points from how many right and wrong answers you get by dragging and dropping. If you get an incorrect text box you will lose two points, and if you get a correct text box you will get 1 point. Once you select an answer, the information you need to be organizing disappears and you cannot get it back. Take your time and choose carefully, because this is not a timed level. Good luck!</body></html>";
+
 	//loop counter
 	private int i;
 	//loop increment
 	private int fadeIn = 1;
 
-	private SpringLayout layout = new SpringLayout();
 	private TextBox box, organization, other;
-	private MouseAdapter adapter = new MouseAdapter();
 
 	//If the text box is about organization or not
 	private boolean isOrganization;
@@ -56,7 +49,6 @@ public class LevelOne extends JPanel{
 		box = new TextBox("");
 		organization = new TextBox("Organization");
 		other = new TextBox("Other");
-		JButton pause = new JButton("Pause");
 
 		shuffle(text);
 		setText(text[0]);
@@ -71,10 +63,8 @@ public class LevelOne extends JPanel{
 		super.add(box);
 		super.add(organization);
 		super.add(other);
-		super.add(pause);
-		pause.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "pause"));
-		box.addMouseListener(adapter);
-		box.addMouseMotionListener(adapter);
+		box.addMouseListener(new MouseAdapter());
+		setDraggable(box);
 
 		//set up layout
 		layout.putConstraint(SpringLayout.WEST, organization, 20, SpringLayout.WEST, this);
@@ -84,42 +74,19 @@ public class LevelOne extends JPanel{
 		layout.putConstraint(SpringLayout.EAST, other, -20, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.WEST, other, 20, SpringLayout.HORIZONTAL_CENTER, this);
 		layout.putConstraint(SpringLayout.SOUTH, other, -20, SpringLayout.SOUTH, this);
-
-		layout.putConstraint(SpringLayout.NORTH, pause, 20, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.EAST, pause, -20, SpringLayout.EAST, this);
+		JOptionPane.showMessageDialog(Main.frame, instructions, "Instructions", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	/**
-	 * Shuffles an array to a random permutation.
-	 *
-	 * @param arr the array to be shuffled.
-	 */
-	private void shuffle(String[] arr){
-		for (int i = arr.length - 1; i > 1; i -= 1){
-			int index = (int)(Math.random() * i);
-			String temp = arr[i];
-			arr[i] = arr[index];
-			arr[index] = temp;
-		}
-	}
-
-	@Override
-	public Dimension getPreferredSize(){
-		return Frame.preferredSize;
-	}
 	private class MouseAdapter extends java.awt.event.MouseAdapter{
 		@Override
-		public void mousePressed(MouseEvent e){
-			x = e.getXOnScreen();
-			y = e.getYOnScreen();
-		}
 		public void mouseReleased(MouseEvent e){
 			//check to see where the text box is
-			boolean inOrganization = thisX < Frame.preferredSize.width / 2 - 20 && thisX + box.getPreferredSize().width > 20 && thisY + box.getPreferredSize().height > Frame.preferredSize.height - 20 - organization.getPreferredSize().height;
-			boolean inOther = thisX + box.getPreferredSize().width > Frame.preferredSize.width / 2 + 20 && thisX < Frame.preferredSize.width - 20 && thisY + box.getPreferredSize().height > Frame.preferredSize.height - 20 - other.getPreferredSize().height;
+			boolean inOrganization = box.getBounds().intersects(organization.getBounds());
+			boolean inOther = box.getBounds().intersects(other.getBounds());
 			if (inOrganization ^ inOther){ // in only one of the boxes
 				box.setVisible(false);
 				if (inOrganization ^ isOrganization){ // Wrong!
+					addPoints(-2);
 					content = xImage;
 					Graphics2D g = xImage.createGraphics();
 					g.setColor(Color.RED);
@@ -146,6 +113,7 @@ public class LevelOne extends JPanel{
 					timer.start();
 				}
 				else{ // Right!
+					addPoints(1);
 					correct += 1;
 					content = checkImage;
 					Graphics2D g = checkImage.createGraphics();
@@ -176,26 +144,10 @@ public class LevelOne extends JPanel{
 					revalidate();
 				}
 				else{ // level is done
-					JOptionPane.showMessageDialog(Main.frame, "You sorted " + 100 * correct / text.length + "% of the text correctly.", "Level Complete", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(Main.frame, "You received " + getPoints() + " points.", "Level Complete", JOptionPane.PLAIN_MESSAGE);
 					Main.frame.mainMenu();
 				}
 			}
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e){
-			dx = e.getXOnScreen() - x;
-			dy = e.getYOnScreen() - y;
-			if (thisX + dx >= 0 && thisX + dx <= maxX){
-				layout.putConstraint(SpringLayout.WEST, box, thisX = thisX + dx, SpringLayout.WEST, LevelOne.this);
-			}
-			if (thisY + dy >= 0 && thisY + dy <= maxY){
-				layout.putConstraint(SpringLayout.NORTH, box, thisY = thisY + dy, SpringLayout.NORTH, LevelOne.this);
-			}
-			x += dx;
-			y += dy;
-			paintImmediately(thisX, thisY, 0, 0);
-			revalidate();
 		}
 	}
 
@@ -206,12 +158,8 @@ public class LevelOne extends JPanel{
 	 */
 	private void setText(String str){
 		box.setText(str);
-		maxX = Frame.preferredSize.width - box.getPreferredSize().width;
-		maxY = Frame.preferredSize.height - box.getPreferredSize().height;
-		thisX = maxX / 2;
-		thisY = maxY / 2;
-		layout.putConstraint(SpringLayout.WEST, box, thisX, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, box, thisY, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, box, (Frame.preferredSize.width - box.getPreferredSize().width) / 2, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, box, (Frame.preferredSize.height - box.getPreferredSize().height) / 2, SpringLayout.NORTH, this);
 		isOrganization = str.contains("organ");
 	}
 	@Override

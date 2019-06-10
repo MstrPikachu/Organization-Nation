@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.SpringLayout;
+import java.beans.EventHandler;
 
 /**
  * The settings panel.
@@ -32,9 +33,8 @@ public class Settings extends JPanel{
 		super.add(controls);
 		super.add(logout);
 		super.add(back);
-		controls.addActionListener(Listener.LISTENER);
-		logout.addActionListener(Listener.LISTENER);
-		back.addActionListener(Listener.LISTENER);
+		logout.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "logout"));
+		back.addActionListener(EventHandler.create(ActionListener.class, Main.frame, "back"));
 
 		//set up layout
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
