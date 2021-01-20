@@ -11,7 +11,7 @@ import java.beans.EventHandler;
  * @version 1.4
  */
 
-public class Intro extends JPanel implements Timed{
+public class Intro extends Background implements Timed{
 	private Timer timer = new Timer(50, Main.frame.backgroundListener);
 
 	/**
@@ -54,14 +54,5 @@ public class Intro extends JPanel implements Timed{
 	@Override
 	public Timer getTimer(){
 		return timer;
-	}
-
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		for (int i = 0; i < Main.frame.CIRCLES; i ++){
-			g.setColor(Main.frame.colors[i]);
-			g.fillOval((int)Main.frame.x[i], (int)Main.frame.y[i], Main.frame.DIAMETER, Main.frame.DIAMETER);
-		}
 	}
 }

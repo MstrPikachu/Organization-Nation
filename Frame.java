@@ -43,13 +43,17 @@ public class Frame extends JFrame {
 
 	//background constants
 	public static final int CIRCLES = 9;
+	public static final int COLOR_RANGE = 360;
+	public static final int MAX_SPEED = 6;
+	public static final int RANDOM_DEVIATION = 0;
 	public static final int DIAMETER = 150;
 	//x, y, and change in x, y values for each circle in the background
+	public static int COLOR_OFFSET = 0;
 	public double[] x = new double[CIRCLES];
 	public double[] y = new double[CIRCLES];
 	public double[] dx = new double[CIRCLES];
 	public double[] dy = new double[CIRCLES];
-	public Color[] colors = new Color[CIRCLES];
+	public Color[] colors = new Color[COLOR_RANGE];
 	public final ActionListener backgroundListener = EventHandler.create(ActionListener.class, this, "updateCircles");
 
 
@@ -68,14 +72,18 @@ public class Frame extends JFrame {
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setResizable(false);
 
-		//make colors and initialize coordinate values
+		//initialize coordinate values
 		for (int i = 0; i < CIRCLES; i ++){
-			double angle = Math.PI / CIRCLES * i;
-			colors[i] = new Color ((int) (127 * Math.sin (angle) + 128), (int) (127 * Math.sin (angle + Math.PI * 2 / 3) + 128), (int) (127 * Math.sin (angle + Math.PI * 4 / 3) + 128), 128);
 			x[i] = Math.random() * (Frame.preferredSize.width - DIAMETER);
 			y[i] = Math.random() * (Frame.preferredSize.height - DIAMETER);
-			dx[i] = Math.random() * -2 + 4;
-			dy[i] = Math.random() * -2 + 4;
+			dx[i] = (Math.sqrt(Math.random()) - 0.5) * MAX_SPEED;
+			dy[i] = (Math.sqrt(Math.random()) - 0.5) * MAX_SPEED;
+		}
+
+		//make colors
+		for (int i = 0; i < COLOR_RANGE; i ++){
+			double angle = 2 * Math.PI / COLOR_RANGE * i;
+			colors[i] = new Color ((int) (127 * Math.sin (angle) + 128), (int) (127 * Math.sin (angle + Math.PI * 2 / 3) + 128), (int) (127 * Math.sin (angle + Math.PI * 4 / 3) + 128), 128);
 		}
 	}
 
@@ -277,13 +285,16 @@ public class Frame extends JFrame {
 	 * Updates the background animation.
 	 */
 	public void updateCircles(){
+		COLOR_OFFSET++;
+		if (COLOR_OFFSET >= COLOR_RANGE)
+		    COLOR_OFFSET = 0;
 		for (int i = 0; i < CIRCLES; i ++){
 			if (x[i] + dx[i] < 0 || x[i] + dx[i] > Frame.preferredSize.width - DIAMETER)
 				dx[i] = -dx[i];
 			if (y[i] + dy[i] < 0 || y[i] + dy[i] > Frame.preferredSize.height - DIAMETER)
 				dy[i] = -dy[i];
-			x[i] += dx[i];
-			y[i] += dy[i];
+			x[i] += dx[i] + (int)(RANDOM_DEVIATION * (Math.random() - 0.5));
+			y[i] += dy[i] + (int)(RANDOM_DEVIATION * (Math.random() - 0.5));
 		}
 		getContentPane().repaint();
 	}
