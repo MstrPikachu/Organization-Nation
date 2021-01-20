@@ -11,8 +11,7 @@ import java.beans.EventHandler;
  * @version 1.4
  */
 
-public class Intro extends Background implements Timed{
-	private Timer timer = new Timer(50, Main.frame.backgroundListener);
+public class Intro extends Background {
 
 	/**
 	 * The class constructor.
@@ -49,10 +48,5 @@ public class Intro extends Background implements Timed{
 	@Override
 	public Dimension getPreferredSize(){
 		return Frame.preferredSize;
-	}
-
-	@Override
-	public Timer getTimer(){
-		return timer;
 	}
 }

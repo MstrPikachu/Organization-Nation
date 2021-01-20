@@ -10,9 +10,7 @@ import java.beans.EventHandler;
  * @version 1.2
  */
 
-public class MainMenu extends Background implements Timed {
-	//Background timer
-	private Timer timer = new Timer(50, Main.frame.backgroundListener);
+public class MainMenu extends Background {
 
 	/**
 	 * The class constructor.
@@ -54,10 +52,6 @@ public class MainMenu extends Background implements Timed {
 		layout.putConstraint(SpringLayout.VERTICAL_CENTER, settings, 50, SpringLayout.VERTICAL_CENTER, this);
 
 		timer.start();
-	}
-	@Override
-	public Timer getTimer(){
-		return timer;
 	}
 
 	@Override
