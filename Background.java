@@ -15,7 +15,7 @@ public class Background extends JPanel implements Timed {
 	//background constants
 	public static final int CIRCLES = 9;
 	public static final int COLOR_RANGE = 360;
-	public static final int MAX_SPEED = 6;
+	public static final int MAX_SPEED = 3;
 	public static final int DIAMETER = 150;
 	
 	//x, y, and change in x, y values for each circle in the background
@@ -30,7 +30,7 @@ public class Background extends JPanel implements Timed {
     
 	//background timer
 	public final ActionListener backgroundListener = EventHandler.create(ActionListener.class, this, "updateCircles");
-	protected Timer timer = new Timer(50, backgroundListener);
+	protected Timer timer = new Timer(25, backgroundListener);
 
 	//initialize background variables
 	static{

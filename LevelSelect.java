@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.beans.EventHandler;
 
-public class LevelSelect extends JPanel{
+public class LevelSelect extends Background{
 	public LevelSelect(){
 		//set up panel
 		super();
